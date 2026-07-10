@@ -1,0 +1,5 @@
+defaults:
+  - scene_filter: navtrain
+
+data_split: trainval
+include_val_logs_in_train: true

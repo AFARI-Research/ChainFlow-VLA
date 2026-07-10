@@ -1,0 +1,45 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+*egg*
+.DS_Store
+
+# Local editor and environment files
+.vscode/
+.idea/
+.env
+.env.*
+
+# Python/build artifacts
+build/
+dist/
+
+# Large datasets, maps, checkpoints, and generated experiment outputs
+/weights/
+/ckpt/
+/dataset/
+/exp/
+/ke/
+/lightning_logs/
+/navsim1_pdm_scores/
+/chainflow_vla/
+/chainflow_vla_old/
+/pad_workspace/
+/logs/
+*.ckpt
+*.pth
+*.pt
+*.onnx
+*.safetensors
+*.pkl
+*.pickle
+*.npy
+*.npz
+*.csv
+*.log
+
+# Bench2Drive/CARLA local assets
+/Bench2DriveZoo/data/
+/Bench2Drive/b2d_ipad_multi-gpu-evaluation*/
+/Bench2Drive/leaderboard/data/
+/carla/

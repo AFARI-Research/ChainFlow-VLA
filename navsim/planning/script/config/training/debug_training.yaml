@@ -1,0 +1,50 @@
+hydra:
+  run:
+    dir: ${output_dir}
+  output_subdir: ${output_dir}/code/hydra
+  searchpath:
+    - pkg://navsim.planning.script.config.common
+  job:
+    chdir: False
+
+defaults:
+  - default_common
+  - default_evaluation
+  - debug_train_val_test_log_split
+  - agent: chainflow_vla
+  - _self_
+
+split: trainval
+cache_path: ${oc.env:NAVSIM_EXP_ROOT}/navsim_cache_nommcv
+use_cache_without_dataset: true
+force_cache_computation: false
+experiment_name: chainflow_vla_debug
+seed: 0
+validation_run: false
+
+dataloader:
+  params:
+    batch_size: 64
+    num_workers: 16
+    pin_memory: true
+    prefetch_factor: 4
+
+trainer:
+  params:
+    max_epochs: 20
+    check_val_every_n_epoch: 1
+    val_check_interval: 1.0
+    limit_train_batches: 1.0
+    limit_val_batches: 1.0
+    accelerator: gpu
+    strategy: ddp
+    precision: 16-mixed
+    num_nodes: 1
+    num_sanity_val_steps: 0
+    fast_dev_run: false
+    accumulate_grad_batches: 1
+    gradient_clip_val: 0.0
+    gradient_clip_algorithm: norm
+    default_root_dir: ${output_dir}
+
+train_ckpt_path: null

@@ -1,0 +1,17 @@
+_target_: navsim.agents.internvl_agent.InternVLAgent
+_convert_: 'all'
+
+trajectory_sampling:
+  _target_: nuplan.planning.simulation.trajectory.trajectory_sampling.TrajectorySampling
+  _convert_: 'all'
+  time_horizon: 4
+  interval_length: 0.5
+checkpoint_path: ''
+prompt_type: 'base'
+cam_type: 'single'
+cache_mode: false
+cache_hidden_state: false
+dynamic_image_size: true
+use_thumbnail: true
+force_image_size: 448
+max_dynamic_patch: 12

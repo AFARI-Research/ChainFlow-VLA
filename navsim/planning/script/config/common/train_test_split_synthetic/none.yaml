@@ -1,0 +1,3 @@
+data_split: none
+defaults:
+  - scene_filter: all_scenes

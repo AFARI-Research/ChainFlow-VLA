@@ -1,0 +1,56 @@
+hydra:
+  run:
+    dir: ${output_dir}
+  output_subdir: ${output_dir}/code/hydra           # Store hydra's config breakdown here for debugging
+  searchpath:                                       # Only <exp_dir> in these paths are discoverable
+    - pkg://navsim.planning.script.config.common
+  job:
+    chdir: False
+
+defaults:
+  - default_common
+  - default_evaluation
+  - default_train_val_test_log_split
+  - _self_
+  - agent: chainflow_vla_stage1
+
+split: trainval
+cache_path: null
+use_cache_without_dataset: false
+force_cache_computation: false
+experiment_name: chainflow_vla
+seed: 2
+validation_run: false
+
+dataloader:
+  params:
+    batch_size: 6
+    num_workers: 10
+    pin_memory: false
+    prefetch_factor: 2
+
+trainer:
+  params:
+    max_epochs: ${oc.select:agent.scheduler_args.num_epochs,25}
+    check_val_every_n_epoch: 1  # run validation set every n training epochs
+    val_check_interval: 1.0  # [%] run validation set every X% of training set
+
+    limit_train_batches: 1.0  # how much of training dataset to check (float = fraction, int = num_batches)
+    limit_val_batches: 0.0  # external PDM eval scripts handle validation
+
+    accelerator: gpu  # distribution method
+    devices: 8
+    strategy: ddp #_find_unused_parameters_true
+    precision: 16-mixed  # floating point precision
+    num_nodes: 1  # Number of nodes used for training
+
+    num_sanity_val_steps: 0  # number of validation steps to run before training begins
+    fast_dev_run: false  # runs 1 batch of train/val/test for sanity
+
+    accumulate_grad_batches: 1  # accumulates gradients every n batches
+    # track_grad_norm: -1  # logs the p-norm for inspection
+    gradient_clip_val: 0.0  # value to clip gradients
+    gradient_clip_algorithm: norm  # [value, norm] method to clip gradients
+    default_root_dir: ${output_dir}
+
+train_ckpt_path: null

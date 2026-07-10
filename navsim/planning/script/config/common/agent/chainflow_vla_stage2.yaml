@@ -1,0 +1,176 @@
+_target_: navsim.agents.chainflow_vla.chainflow_vla_agent.ChainFlowVLAAgent
+
+config:
+
+  ####################
+  # Trajectory / proposal config
+  proposal_num: 64 # number of proposals (trajectories)
+  num_poses: 8 # size of the trajectories
+  long_trajectory_additional_poses: 2
+  ref_num: 4 # number of refining steps
+  scorer_ref_num: 4
+  shared_refiner: false
+  num_scene_tokens: 16
+  one_token_per_traj: true
+  full_history_status: false
+
+  trajectory_sampling:
+    _target_: nuplan.planning.simulation.trajectory.trajectory_sampling.TrajectorySampling
+    time_horizon: 4
+    interval_length: 0.5
+
+  ####################
+  # Stage1: Autoregressive decoder
+  ar_decoder_num_layers: 1
+  ar_bicycle_dt: 0.5
+  scorer_detach_proposals: true
+  pdm_score_detach_proposals: true
+
+  ####################
+  # Stage2: Diffusion decoder
+  use_diffusion_decoder: true
+  train_diffusion_decoder_only: false
+  train_scorer: true
+  diffusion_type: "ddim" # optional: flow_matching
+  diffusion_num_layers: 12
+  diffusion_num_heads: 8
+  diffusion_d_ffn: 1024
+  diffusion_delta_scale: 1.0
+  diffusion_eval_noise_seed: 27
+  diffusion_ego_status_dim: 8
+  diffusion_vlm_hidden_dim: 1536
+  diffusion_use_ar_proposal_tokens: false
+  # DDIM-specific
+  ddim_num_train_timesteps: 1000
+  ddim_beta_schedule: "scaled_linear"
+  diffusion_num_inference_steps: 12
+  # Flow-matching-specific
+  flow_matching_num_timestep_buckets: 1000
+  flow_matching_noise_beta_alpha: 1.5
+  flow_matching_noise_beta_beta: 1.0
+  flow_matching_noise_scale: 0.999
+
+  ####################
+  # VLM feature cache
+  use_vlm_feature_cache: true
+  vlm_feature_cache_path: ""
+  vlm_feature_cache_format: gz
+  vlm_feature_cache_name: internvl_feature
+  vlm_hidden_key: last_hidden_state
+
+  ####################
+  # PDM scoring weights
+  noc: 1.0
+  dac: 1.0
+  ddc: 0.0
+  ttc: 5.0
+  ep: 5.0
+  comfort: 2.0
+
+  ####################
+  # Transformer feature dims
+  tf_d_model: 256 # general feature size of the model
+  tf_d_ffn: 1024 # hidden size of the heads
+
+  ####################
+  # Sensor config
+  cam_f0: [3]
+  cam_l0: [3]
+  cam_l1: []
+  cam_l2: []
+  cam_r0: [3]
+  cam_r1: []
+  cam_r2: []
+  cam_b0: [3]
+  lidar_pc: []
+
+  ####################
+  # Image branch params
+  image_size: [1148, 672] # input image size
+
+  image_backbone:
+    model_name: timm/vit_small_patch14_reg4_dinov2.lvd142m
+    model_weights: weights/vit_small_patch14_reg4_dinov2.lvd142m/model.safetensors
+    use_lora: true
+    finetune: false
+    lora_rank: 32
+    focus_front_cam: false
+    use_feature_pooling: false
+    compress_fc: false
+
+  ####################
+  # Lidar branch params
+  lidar_min_x: -35
+  lidar_max_x: 35
+  lidar_min_y: -35
+  lidar_max_y: 35
+  lidar_image_size: [518, 518] # input image size
+  lidar_hist_max_per_pixel: 5
+  lidar_max_height: 100.0
+  lidar_split_height: 0.2
+  lidar_use_ground_plane: true
+  lidar_backbone:
+    model_name: timm/vit_small_patch14_reg4_dinov2.lvd142m
+    model_weights: weights/vit_small_patch14_reg4_dinov2.lvd142m/model.safetensors
+    use_lora: true
+    finetune: false
+    lora_rank: 32
+    in_chans: 2 # 2 if use ground plane, 1 otherwise
+
+  ####################
+  # Scorer / refiner params
+  double_score: false
+  agent_pred: false
+  area_pred: false
+  bev_map: false
+  bev_agent: false
+  refiner_num_heads: 1
+  refiner_ls_values: 0.0
+  scorer_use_serial_vlm_context: false
+  scorer_use_mode_cross_attention: false
+  scorer_mode_cross_attn_heads: null
+
+
+####################
+# Loss weights
+loss:
+  _target_: navsim.agents.chainflow_vla.losses.loss.ChainFlowVLALoss
+  trajectory_weight: 1.0
+  inter_weight: 0.0
+  sub_score_weight: 0.0
+  final_score_weight: 1.0
+  pred_ce_weight: 1.0
+  pred_l1_weight: 0.1
+  pred_area_weight: 2.0
+  prev_weight: 0.0
+  agent_class_weight: 1.0
+  agent_box_weight: 0.1
+  bev_semantic_weight: 1.0
+  div_weight: 0.0
+  diffusion_loss_weight: 10.0
+  diffusion_trajectory_loss_weight: 20.0
+
+####################
+# Checkpoint
+checkpoint_path: ''
+checkpoint_strict_load: false
+
+####################
+# Optimizer / scheduler
+lr_args:
+  name: AdamW
+  base_lr: 2e-4
+  base_batch_size: 64
+scheduler_args:
+  num_epochs: 40  # single source of truth for Lightning max_epochs + LR scheduler
+  dataset_size: 85000 # for navsim
+
+####################
+# Runtime / training
+batch_size: ${dataloader.params.batch_size}
+num_gpus: 8 # the batchsize is per gpu --> need to update for steps
+# null = follow CHAINFLOW_ENABLE_RAY env (default on for training). PDM eval sets agent.enable_ray=false.
+enable_ray: null
+
+progress_bar: false # default progress bar. if false replace by a console print every N iterations
+console_log_every_n_steps: 100
