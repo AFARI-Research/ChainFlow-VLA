@@ -10,21 +10,14 @@
 *Equal contribution. Listed in no particular order.    †Project Leader.  
 <sup>✉</sup> Corresponding author (zhouhangning@qianli-drive.com).
 
-  <a href="https://huggingface.co/spaces/AGC2024-P/e2e-driving-navtest">
-    <img src="https://img.shields.io/badge/🏆%20NAVSIM%20v1-TOP%201-C9A227?style=flat" alt="NAVSIM v1 Leaderboard #1">
-  </a>
-  <a href="https://arxiv.org/pdf/2605.23270">
-    <img src="https://img.shields.io/badge/arXiv-ChainFlowVLA-B31B1B?style=flat&logo=arxiv&logoColor=white" alt="Paper PDF">
-  </a>
-  <a href="https://huggingface.co/AFARI-Research/ChainFlow-VLA/tree/main/weights">
-    <img src="https://img.shields.io/badge/Weights-ChainFlowVLA-2C5282?style=flat&logo=huggingface&logoColor=FFD21E" alt="Huggingface Weights">
-  </a>
-  <a href="https://huggingface.co/datasets/AFARI-Research/ChainFlow-VLA-VLM-Feature-Cache/tree/main">
-    <img src="https://img.shields.io/badge/Datasets-ChainFlowVLA-319795?style=flat&logo=huggingface&logoColor=FFD21E" alt="Huggingface Datasets">
-  </a>
+[![NAVSIM v1 Leaderboard #1](https://img.shields.io/badge/🏆%20NAVSIM%20v1-TOP%201-C9A227?style=flat)](https://huggingface.co/spaces/AGC2024-P/e2e-driving-navtest)
+[![Paper PDF](https://img.shields.io/badge/arXiv-ChainFlowVLA-B31B1B?style=flat&logo=arxiv&logoColor=white)](https://arxiv.org/pdf/2605.23270)
+[![Huggingface Weights](https://img.shields.io/badge/Weights-ChainFlowVLA-2C5282?style=flat&logo=huggingface&logoColor=FFD21E)](https://huggingface.co/AFARI-Research/ChainFlow-VLA/tree/main/weights)
+[![Huggingface Datasets](https://img.shields.io/badge/Datasets-ChainFlowVLA-319795?style=flat&logo=huggingface&logoColor=FFD21E)](https://huggingface.co/datasets/AFARI-Research/ChainFlow-VLA-VLM-Feature-Cache/tree/main)
 </div>
 
 ## News
+- `[2026/07/10]` The repository is now open-sourced and publicly available on GitHub.
 - `[2026/06/03]` Cached VLM features were released at [Huggingface](https://huggingface.co/datasets/AFARI-Research/ChainFlow-VLA-VLM-Feature-Cache/tree/main) and [ModelScope](https://modelscope.cn/datasets/AFARI/ChainFlow-VLA-VLM-Feature-Cache).
 - `[2026/06/02]` Model weights were released at [Huggingface](https://huggingface.co/AFARI-Research/ChainFlow-VLA/tree/main/weights) and [Modelscope](https://modelscope.cn/models/AFARI/ChainFlow-VLA).
 - `[2026/05/22]` We released our paper on [arXiv](https://arxiv.org/pdf/2605.23270).
