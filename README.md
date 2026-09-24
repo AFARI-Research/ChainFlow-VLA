@@ -17,6 +17,7 @@
 </div>
 
 ## News
+- `[2026/09/25]` ChainFlow-VLA is accepted at NeurIPS 2026.
 - `[2026/07/10]` The repository is now open-sourced and publicly available on GitHub.
 - `[2026/06/03]` Cached VLM features were released at [Huggingface](https://huggingface.co/datasets/AFARI-Research/ChainFlow-VLA-VLM-Feature-Cache/tree/main) and [ModelScope](https://modelscope.cn/datasets/AFARI/ChainFlow-VLA-VLM-Feature-Cache).
 - `[2026/06/02]` Model weights were released at [Huggingface](https://huggingface.co/AFARI-Research/ChainFlow-VLA/tree/main/weights) and [Modelscope](https://modelscope.cn/models/AFARI/ChainFlow-VLA).
